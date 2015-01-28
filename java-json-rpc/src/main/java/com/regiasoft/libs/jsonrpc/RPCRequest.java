@@ -1,11 +1,13 @@
 package com.regiasoft.libs.jsonrpc;
 
+import com.google.gson.JsonArray;
+
 
 public class RPCRequest {
 	
 	private String version;
 	private String method;
-	private Object[] params;
+	private JsonArray params;
 	private int id;
 	
 	public String getVersion() {
@@ -20,10 +22,10 @@ public class RPCRequest {
 	public void setMethod(String method) {
 		this.method = method;
 	}
-	public Object[] getParams() {
+	public JsonArray getParams() {
 		return params;
 	}
-	public void setParams(Object[] params) {
+	public void setParams(JsonArray params) {
 		this.params = params;
 	}
 	public int getId() {

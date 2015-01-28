@@ -6,8 +6,7 @@ public class RPCResponse {
 	private String version;
 	private Object result;
 	private String error;
-	private int id;
-	
+	private int id;	
 	
 	public String getVersion() {
 		return version;

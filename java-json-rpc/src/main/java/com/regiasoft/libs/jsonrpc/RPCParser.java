@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.util.ClassUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 
 public class RPCParser<T> {
 	
@@ -41,6 +44,39 @@ public class RPCParser<T> {
 		
 	}
 	
+	public Method predictMethod(String name, JsonArray args) {
+		
+		List<Method> m = this.methods.get(name);
+				
+		//first remove the ones with wrong param length
+		m.removeIf((method) -> method.getParameterCount() != args.size());
+		
+		// then test for correct param types
+		Gson gson = new Gson();
+		m.removeIf((method) -> {
+			Class<?>[] classes = method.getParameterTypes();
+			
+			for (int i = 0; i < args.size(); i++) {
+			
+				JsonElement e = args.get(i);
+				
+				try {
+					gson.fromJson(e, classes[i]);					
+				} catch (JsonSyntaxException ex) {
+					return true;					
+				}
+			}
+			return false;
+		});
+				
+		// only the matching should be left
+		if (m.size() > 0) {
+			return m.get(0);
+		} else {
+			return null;
+		}
+	}
+	
 	public RPCResponse callProcedure(RPCRequest request) {
 		
 		RPCResponse response = new RPCResponse();
@@ -55,49 +91,29 @@ public class RPCParser<T> {
 			return response;
 		}
 		
-		Method matchingMethod = null;
-		for (Method m : possibleMethods) {
-			
-			Class<?>[] paramTypes = m.getParameterTypes();
-			
-			boolean isMatching = true;
-			
-			if (paramTypes.length == request.getParams().length) {
-				
-				for(int i = 0; i < paramTypes.length; i++) {
-					
-					Class<?> type = paramTypes[i];
-					// if the type is a primitive => resolve this primitive
-					if (type.isPrimitive()) {
-						type = ClassUtils.resolvePrimitiveIfNecessary(type);
-					}
-					
-					if (request.getParams()[i] != null) {						
-						if (!type.isInstance(request.getParams()[i])) {
-							isMatching = false;
-						}
-					}
-				}
-			} else {
-				isMatching = false;
-			}
-			
-			if (isMatching) {
-				matchingMethod = m;
-				break;
-			}
-		}
+		Method matchingMethod = predictMethod(request.getMethod(), request.getParams());
 		
 		if (matchingMethod == null) {
 			response.setError(new MethodNotFoundError().toString());
 			
 			return response;
 		}
-		
+	
 		// invoke the found method
 		try {
-			Object result = matchingMethod.invoke(implementationObject, request.getParams());
+			//parse the parameters
+			Object[] params = new Object[request.getParams().size()];
+			
+			Gson gson = new Gson();
+			for (int i = 0; i < request.getParams().size(); i++) {
+				
+				params[i] = gson.fromJson(request.getParams().get(i), 
+						matchingMethod.getParameterTypes()[i]);				
+			}
+			
+			Object result = matchingMethod.invoke(implementationObject, params);
 			response.setResult(result);
+			
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			response.setError(e.toString());
 		} catch (InvocationTargetException e) {
