@@ -4,8 +4,8 @@
   <artifactId>java-json-rpc</artifactId>
   <versioning>
     <versions>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.2-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20150128100016</lastUpdated>
+    <lastUpdated>20150128103221</lastUpdated>
   </versioning>
 </metadata>

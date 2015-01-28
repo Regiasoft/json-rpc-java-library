@@ -2,23 +2,23 @@
 <metadata modelVersion="1.1.0">
   <groupId>com.regiasoft.libs</groupId>
   <artifactId>java-json-rpc</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20150128.100016</timestamp>
+      <timestamp>20150128.103221</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
-    <lastUpdated>20150128100016</lastUpdated>
+    <lastUpdated>20150128103221</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>0.0.1-20150128.100016-1</value>
-        <updated>20150128100016</updated>
+        <value>0.0.2-20150128.103221-1</value>
+        <updated>20150128103221</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>0.0.1-20150128.100016-1</value>
-        <updated>20150128100016</updated>
+        <value>0.0.2-20150128.103221-1</value>
+        <updated>20150128103221</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
