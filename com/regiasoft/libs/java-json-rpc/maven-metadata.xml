@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.regiasoft.libs</groupId>
+  <artifactId>java-json-rpc</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20150128100016</lastUpdated>
+  </versioning>
+</metadata>
